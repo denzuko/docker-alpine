@@ -1,18 +1,16 @@
 FROM smebberson/alpine-consul
 MAINTAINER Scott Mebberson <scott@scottmebberson.com>
 
-ENV CONSUL_VERSION=0.5.2
+ENV CONSUL_VERSION=0.6.4
 
 # Download and install Consul-ui
-ADD https://dl.bintray.com/mitchellh/consul/${CONSUL_VERSION}_web_ui.zip /tmp/consul_web_ui.zip
-RUN cd /tmp && \
-    unzip consul_web_ui.zip && \
-    mkdir /ui && \
-    mv dist/* /ui && \
+ADD https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_web_ui.zip /tmp/consul_web_ui.zip
+RUN mkdir /ui && \
+    cd /tmp && \
+    unzip -d /ui consul_web_ui.zip && \
     chown -R consul:consul /ui && \
     rm consul_web_ui.zip
 
-# Add the files
 ADD root /
 
 # Expose the web ui port

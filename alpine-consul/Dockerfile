@@ -1,12 +1,34 @@
-FROM smebberson/alpine-base:1.2.0
+FROM smebberson/alpine-base:1.3.0
 MAINTAINER Scott Mebberson <scott@scottmebberson.com>
 
-ENV CONSUL_VERSION=0.5.2 GOMAXPROCS=2
+ENV CONSUL_VERSION=0.6.4 GOMAXPROCS=2
+
+# Install GO 1.6
+# https://hub.docker.com/r/sephvelu/golang-alpine/~/dockerfile/
+RUN apk update && \
+    apk add curl && \
+    curl -L -o glibc-2.21-r2.apk \
+      "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk" && \
+    curl -L -o glibc-bin-2.21-r2.apk \
+      "https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-bin-2.21-r2.apk" && \
+    apk add --allow-untrusted glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
+    rm -f glibc-2.21-r2.apk glibc-bin-2.21-r2.apk && \
+    /usr/glibc/usr/bin/ldconfig /lib /usr/glibc/usr/lib && \
+    curl https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz | tar xzf - -C / && \
+    mv /go /goroot && \
+    mkdir /gopath && \
+    mkdir /gopath/src && \
+    mkdir /gopath/bin && \
+    mkdir /gopath/pkg
+
+ENV GOROOT=/goroot \
+    GOPATH=/gopath \
+    GOBIN=/gopath/bin \
+    PATH=${PATH}:/goroot/bin:/gopath/bin
 
 # Download and install Consul
 # We are building it ourselves, because Alpine Linux doesn't use glibc
-RUN export GOPATH=/go && \
-    apk add --update go git gcc musl-dev make bash && \
+RUN apk add --update git gcc musl-dev make bash zip && \
     go get github.com/hashicorp/consul && \
     cd $GOPATH/src/github.com/hashicorp/consul && \
     git checkout -q --detach "v$CONSUL_VERSION" && \
