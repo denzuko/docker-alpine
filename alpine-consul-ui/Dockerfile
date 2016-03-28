@@ -1,5 +1,4 @@
-FROM smebberson/alpine-consul
-MAINTAINER Scott Mebberson <scott@scottmebberson.com>
+FROM solvebio/alpine-consul
 
 ENV CONSUL_VERSION=0.6.4
 
