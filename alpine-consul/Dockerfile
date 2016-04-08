@@ -5,6 +5,8 @@ ENV CONSUL_VERSION=0.6.4 GOMAXPROCS=2
 
 # Install GO 1.6
 # https://hub.docker.com/r/sephvelu/golang-alpine/~/dockerfile/
+# TODO maybe switch to this golang default
+# https://github.com/docker-library/golang/blob/master/1.6/alpine/Dockerfile
 RUN apk update && \
     apk add curl && \
     curl -L -o glibc-2.21-r2.apk \
