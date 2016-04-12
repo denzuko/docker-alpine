@@ -1,4 +1,4 @@
-FROM smebberson/alpine-base:1.3.0
+FROM smebberson/alpine-base:2.0.0
 # FROM alpine
 MAINTAINER Ilkka Anttonen version: 0.4
 

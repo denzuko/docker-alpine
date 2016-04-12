@@ -1,4 +1,4 @@
-FROM smebberson/alpine-base:1.2.1
+FROM smebberson/alpine-base:2.0.0
 MAINTAINER Scott Mebberson <scott@scottmebberson.com>
 
 ENV NODE_VERSION=v5.9.0 NPM_VERSION=3
