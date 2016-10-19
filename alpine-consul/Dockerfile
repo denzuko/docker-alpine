@@ -1,7 +1,7 @@
 FROM smebberson/alpine-base:2.0.0
 MAINTAINER Scott Mebberson <scott@scottmebberson.com>
 
-ENV CONSUL_VERSION=0.6.4 \
+ENV CONSUL_VERSION=0.7.0 \
     CONSUL_DOMAIN=consul
 
 # Download and install Consul

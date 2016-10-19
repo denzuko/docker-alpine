@@ -1,6 +1,6 @@
 FROM solvebio/alpine-consul
 
-ENV CONSUL_VERSION=0.6.4
+ENV CONSUL_VERSION=0.7.0
 
 # Download and install Consul UI
 RUN apk add --update curl && \
