@@ -1,35 +1,27 @@
-alpine-nginx
-============
+# alpine-nginx
 
-An image for using [nginx][nginx], bundled with Alpine Linux and s6.
+A Docker image for running [nginx][nginx], based on Alpine Linux.
+This image belongs to a suite of images [documented here][dockeralpine].
 
-**_Yet another container for running nginx?_**
+## Features
 
-Yes, but this one is built from [smebberson/alpine-base][alpinebase] that contains [s6][s6] for process management. Small, fast and with s6.
+This image features:
 
-_**Aren't you only supposed to run one process per container?**_
+- [Alpine Linux][alpinelinux]
+- [s6][s6] and [s6-overlay][s6overlay]
+- [Nginx][nginx]
 
-Hell no! The following are good examples of when multiple processes within one container might be necessary:
+## Versions
 
-- Automatically updating [nginx][nginx] proxy settings when a down-stream application server (nodejs, php, etc) restarts (and the IP changes).
-- Automatically updating [HAProxy][haproxy] configuration to load balance to a group of down-stream application servers.
-- Running a logging daemon to centralize log management (i.e. [logentries][logentries], [loggly][loggly], [logstash][logstash]).
-- When you need to run a script on application server crash (to tidy something up), as the standard [Docker container restart policies][drsp] won't provide this.
-
-In all of these instances, there is one primary services and secondary support services. When the secondary support services fail, they should be automatically restarted. When the primary service fails, the container itself should restart.
-
-Versions
---------
-
-- `2.1.1`, `latest` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/master/alpine-nginx/Dockerfile)
-- `2.1.0` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/40f6de779f5d2ea0ea3f5f36a8942aa49f238304/alpine-nginx/Dockerfile)
-- `2.0.0` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/d40c123d03bcf6d658ba003dcff78a062f0a3ba0/alpine-nginx/Dockerfile)
-- `1.0.0` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/faf86102b13d00784b9ae4c11727c5366d0e7907/alpine-nginx/Dockerfile)
+- `3.0.0`, `latest` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/alpine-nginx-v3.0.0/alpine-nginx/Dockerfile)
+- `2.1.1` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/alpine-nginx-v2.1.1/alpine-nginx/Dockerfile)
+- `2.1.0` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/alpine-nginx-v2.1.0/alpine-nginx/Dockerfile)
+- `2.0.0` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/alpine-nginx-v2.0.0/alpine-nginx/Dockerfile)
+- `1.0.0` [(Dockerfile)](https://github.com/smebberson/docker-alpine/blob/alpine-nginx-v1.0.0/alpine-nginx/Dockerfile)
 
 [See VERSIONS.md for image contents.](https://github.com/smebberson/docker-alpine/blob/master/alpine-nginx/VERSIONS.md)
 
-Usage
------
+## Usage
 
 To use this image include `FROM smebberson/alpine-nginx` at the top of your `Dockerfile`, or simply `docker run -p 80:80 -p 443:443 --name nginx smebberson/alpine-nginx`.
 
@@ -48,8 +40,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 ```
 
-Customisation
--------------
+## Customisation
 
 This container comes setup as follows:
 
@@ -88,27 +79,27 @@ If you don't want this to happen, simply replace the `root/etc/services.d/nginx/
 
 ### Nginx configuration
 
-If you need to, you can run a setup script before starting nginx. During your `Dockerfile` build process, copy across a file to `/etc/services.d/nginx/run` with the following (or customise it as required):
+If you need to, you can run a setup script before starting nginx. During your Dockerfile build process, copy across a file to `/etc/services.d/nginx/run` with the following (or customise it as required):
 
 ```
-#!/usr/bin/env sh
+#!/usr/bin/with-contenv sh
 
 if [ -e ./setup ]; then
 ./setup
 fi
 
-# start nginx
-exec nginx;
+# Start nginx.
+nginx -g "daemon off;"
 ```
 
+## Example
+
+An example of using this image can be found in [examples/user-nginx][example].
+
+[alpinelinux]: https://www.alpinelinux.org/
+[consul]: https://consul.io/
 [s6]: http://www.skarnet.org/software/s6/
-[s6-built-statically]: https://github.com/smebberson/docker-ubuntu-base/blob/master/s6/s6-build
-[logentries]: https://logentries.com/
-[loggly]: https://www.loggly.com/
-[logstash]: http://logstash.net/
-[drsp]: https://docs.docker.com/reference/commandline/cli/#restart-policies
+[s6overlay]: https://github.com/just-containers/s6-overlay
+[dockeralpine]: https://github.com/smebberson/docker-alpine
 [nginx]: http://nginx.org/
-[haproxy]: http://www.haproxy.org/
-[alpinebase]: https://registry.hub.docker.com/u/smebberson/alpine-base/
-[s6]: http://www.skarnet.org/software/s6/
-[dockerlogs]: https://docs.docker.com/reference/commandline/cli/#logs
+[example]: https://github.com/smebberson/docker-alpine/tree/master/examples/user-nginx

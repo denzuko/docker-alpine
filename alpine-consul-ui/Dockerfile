@@ -1,6 +1,7 @@
 FROM solvebio/alpine-consul
 
-ENV CONSUL_VERSION=0.7.0
+ENV CONSUL_VERSION=0.6.4
+ENV CONSUL_CONFIG_DIR=/etc/consul.d
 
 # Download and install Consul UI
 RUN apk add --update curl && \
@@ -12,7 +13,5 @@ RUN apk add --update curl && \
     apk del --purge curl && \
     rm -rf /var/cache/apk/* consul_web_ui.zip
 
-ADD root /
 
-# Expose the web ui port
-EXPOSE 8500
+ADD root /
