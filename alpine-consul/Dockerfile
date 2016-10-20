@@ -17,12 +17,6 @@ RUN apk add --no-cache curl && \
     mkdir -p /data/consul && \
     chown -R consul:consul /data/consul
 
-
-ENV GOROOT=/goroot \
-    GOPATH=/gopath \
-    GOBIN=/gopath/bin \
-    PATH=${PATH}:/goroot/bin:/gopath/bin
-
 # Add the files
 ADD root /
 
